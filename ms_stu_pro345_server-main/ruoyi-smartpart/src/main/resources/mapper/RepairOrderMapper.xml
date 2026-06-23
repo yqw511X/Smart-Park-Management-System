@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.smartpart.mapper.RepairOrderMapper">
+
+
+    <select id="selectListRepairOrder" resultType="com.ruoyi.smartpart.domain.entity.RepairOrder">
+        SELECT
+        ro.repair_order_id,
+        ro.repair_num,
+        ro.status,
+        ro.create_time,
+        ro.repair_id,
+        ro.tenant_id,
+        ro.repair_area,
+        ro.contact_name,
+        ro.contact_phone
+        FROM repair_order ro
+        <where>
+            <!-- 逻辑删除：只查未删除的数据 -->
+            AND ro.del_flag = 0
+
+            <!-- 原有查询条件 -->
+            <if test="repairNum != null and repairNum != ''">
+                AND ro.repair_num like concat('%', #{repairNum}, '%')
+            </if>
+            <if test="status != null and status != ''">
+                AND ro.status = #{status}
+            </if>
+        </where>
+        ORDER BY ro.repair_time DESC
+    </select>
+</mapper>

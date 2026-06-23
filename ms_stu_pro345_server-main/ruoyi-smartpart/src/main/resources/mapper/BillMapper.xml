@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.smartpart.mapper.BillMapper">
+
+    <select id="getPageLists" resultType="com.ruoyi.smartpart.domain.vo.Bill.BillListVo">
+        SELECT
+            t2.nick_name,
+            t1.bill_id,
+            t1.tenant_id,
+            t1.room_id,
+            t1.contract_id,
+            t1.tenant_money,
+            t1.manage_fee,
+            t1.total_pay,
+            t1.overdue,
+            t1.refund_fees,
+            t1.`status`,
+            t1.deposit,
+            t1.deadline,
+            t1.payment,
+            t3.contract_num,
+            t3.contract_name,
+            t1.remark
+        FROM
+            bill AS t1
+        LEFT JOIN
+            sys_user AS t2
+            ON t1.tenant_id = t2.user_id
+        LEFT JOIN
+            contract AS t3
+            ON t1.contract_id = t3.contract_id
+            ${ew.customSqlSegment}
+        ORDER BY
+            t1.create_time DESC
+    </select>
+
+    <select id="getPageListsByTenantId" resultType="com.ruoyi.smartpart.domain.vo.Bill.BillListVo">
+        SELECT
+            t2.nick_name,
+            t1.bill_id,
+            t1.tenant_id,
+            t1.room_id,
+            t1.contract_id,
+            t1.tenant_money,
+            t1.manage_fee,
+            t1.total_pay,
+            t1.overdue,
+            t1.refund_fees,
+            t1.`status`,
+            t1.deposit,
+            t1.deadline,
+            t1.payment,
+            t3.contract_num,
+            t3.contract_name,
+            t1.remark
+        FROM
+            bill AS t1
+                LEFT JOIN
+            sys_user AS t2
+            ON t1.tenant_id = t2.user_id
+                LEFT JOIN
+            contract AS t3
+            ON t1.contract_id = t3.contract_id
+            ${ew.customSqlSegment}
+        ORDER BY
+            t1.create_time DESC
+    </select>
+</mapper>

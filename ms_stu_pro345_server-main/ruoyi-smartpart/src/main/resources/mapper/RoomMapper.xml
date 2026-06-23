@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.smartpart.mapper.RoomMapper">
+    <select id="getPageList" resultType="com.ruoyi.smartpart.domain.vo.room.RoomListVo">
+        SELECT
+            r.park_name,
+            r.room_id,
+            r.room_name,
+            b.building_id,
+            b.building_name,
+            f.floor_id,
+            f.floor_name,
+            r.area,
+            r.tenant_status,
+            r.tenant_money,
+            r.tenant_money_type,
+            r.create_time,
+            r.status shelve_status
+        FROM
+            room AS r
+        LEFT JOIN
+            floor AS f
+        ON
+            f.floor_id = r.floor_id AND
+            f.del_flag = 0
+        LEFT JOIN
+            building AS b
+        ON
+            b.building_id = f.building_id AND
+            b.del_flag = 0
+        ${ew.customSqlSegment}
+    </select>
+
+    <select id="getHomeRoomList" resultType="com.ruoyi.smartpart.domain.vo.room.HomeRoomVo">
+        SELECT
+            r.park_name,
+            r.room_id,
+            r.room_name,
+            b.building_name,
+            f.floor_name,
+            r.area,
+            r.tenant_status,
+            r.tenant_money,
+            r.tenant_money_type
+        FROM
+            room AS r
+        LEFT JOIN
+            floor AS f
+        ON
+            f.floor_id = r.floor_id AND
+            f.del_flag = 0
+        LEFT JOIN
+            building AS b
+        ON
+            b.building_id = f.building_id AND
+            b.del_flag = 0
+        ${ew.customSqlSegment}
+    </select>
+
+    <select id="getMyRoomList" resultType="com.ruoyi.smartpart.domain.vo.room.MyRoomVo">
+        SELECT
+            ta.id AS application_id,
+            ta.room_status AS tenant_status,
+            r.park_name,
+            r.room_name,
+            r.room_id,
+            b.building_name,
+            f.floor_name,
+            r.area,
+            r.tenant_money,
+            r.tenant_money_type,
+            ta.apply_time,
+            ta.status AS approval_status,
+            ta.start_time,
+            ta.end_time
+        FROM
+            tenant_application ta
+        INNER JOIN
+            room r ON ta.room_id = r.room_id AND r.del_flag = '0'
+        LEFT JOIN
+            floor f ON r.floor_id = f.floor_id AND f.del_flag = '0'
+        LEFT JOIN
+            building b ON r.building_id = b.building_id AND b.del_flag = '0'
+        ${ew.customSqlSegment}
+    </select>
+
+    <select id="getRoomByContract" resultType="com.ruoyi.smartpart.domain.vo.room.RoomByContractListVo">
+        SELECT
+            r.park_name,
+            r.room_id,
+            r.room_name,
+            b.building_id,
+            b.building_name,
+            f.floor_id,
+            f.floor_name,
+            r.area,
+            r.tenant_money,
+            r.tenant_money_type
+        FROM
+            room AS r
+                LEFT JOIN
+            floor AS f
+            ON
+                f.floor_id = r.floor_id AND
+                f.del_flag = 0
+                LEFT JOIN
+            building AS b
+            ON
+                b.building_id = f.building_id AND
+                b.del_flag = 0
+            ${ew.customSqlSegment}
+        ORDER BY
+            r.create_time DESC
+    </select>
+</mapper>

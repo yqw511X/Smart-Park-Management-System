@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.smartpart.mapper.RoomRecordMapper">
+    <select id="selectRoomRecordList" resultType="com.ruoyi.smartpart.domain.vo.room.RoomRecordVo">
+        SELECT
+            rr.status,
+            u.nick_name AS tenantName,
+            rr.time,
+            rr.tenant_time AS tenantTime,
+            u.id_num AS idNum,
+            u.email,
+            u.phonenumber,
+            u.address
+        FROM
+            room_record rr
+        LEFT JOIN
+            sys_user u ON rr.tenant_id = u.user_id
+            AND u.del_flag = 0
+        WHERE
+            rr.room_id = #{roomId}
+            AND rr.del_flag = 0
+        ORDER BY
+            rr.time DESC
+    </select>
+</mapper>
